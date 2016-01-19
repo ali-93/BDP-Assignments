@@ -1,0 +1,18 @@
+{
+    "contents" : "\nolx_data <- read.csv(file = \"olx_ad_details.csv\", header = TRUE, sep = \",\")\n\nnew_mobile_data <- read.csv(file = \"new_mobile_prices.csv\", header = TRUE, sep = \",\")\n\n\nolx_titles <- character(length = length(olx_data$Product_Title))\nfor (i in 1 : length(olx_titles)) {\n    olx_titles[i] <- sprintf(\"%s\", olx_data$Product_Title[i])\n}\n\nsort(olx_titles, na.last = TRUE)\nnew_mobile_titles <- character(length = length(new_mobile_data$Title))\nfor (i in 1 : length(new_mobile_titles)) {\n  new_mobile_titles[i] <- sprintf(\"%s\", new_mobile_data$Title[i])\n}\nsort(new_mobile_titles, na.last = TRUE)\nresult_length = 0\nfor (i in 1 : length(new_mobile_titles)) {\n    patt <- new_mobile_titles[i]\n    results <- grep(patt, olx_titles,\n                    value = TRUE, ignore.case = TRUE)\n    if (length(results) > result_length) {\n      for (j in  1 : length(olx_data$Product_Title)) {\n          if (results == olx_data$Product_Title[j]) {\n              old_price = trimws(olx_data$Price[j])\n              ad_id = trimws(olx_data$Ad_ID[j])\n              username = trimws(olx_data$Username[j])\n              city = trimws(olx_data$City[j])\n              views = trimws(olx_data$Views[j])\n              phone = olx_data$Phone[j]\n          }\n      }\n      for (j in 1 : length(new_mobile_data$Title)) {\n          if (patt == new_mobile_data$Title[j]) {\n              new_price = new_mobile_data$Price[j]\n              brand = new_mobile_data$Brand[j]\n          }\n      }\n      dfrm <- data.frame(Olx_Title = results, New_Title = patt, Old_Price = old_price, \n                         New_Price = new_price, Brand = brand,\n                         City = city, Ad_Id = ad_id, Username = username, Phone = phone,\n                         Views = views)\n      write.table(dfrm, file = \"olx_mapped_titles.csv\", append = TRUE, \n                         sep = \",\", row.names = FALSE, col.names = FALSE)\n    }\n    result_length = length(results)\n}",
+    "created" : 1452174291207.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "948441855",
+    "id" : "B8746FDE",
+    "lastKnownWriteTime" : 1452174302,
+    "path" : "C:/Users/Umair/Desktop/Assignment/matching_titles.R",
+    "project_path" : "matching_titles.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
